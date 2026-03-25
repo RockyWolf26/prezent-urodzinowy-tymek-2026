@@ -69,12 +69,12 @@
         /* NOWY STYL DLA UCIEKAJĄCEGO PRZYCISKU */
         #runaway-btn {
             position: fixed; /* Od razu pozycjonujemy go względem całego okna */
-            top: 50%;
+            top: 65%; /* ZMIANA: Obniżono z 50% na 65%, aby nie nachodził na tekst */
             left: 50%;
             transform: translate(-50%, -50%); /* Zapewnia wyśrodkowanie na start */
             z-index: 9999; 
-            /* Właściwość transition odpowiada za płynne przesuwanie w 0.4 i 0.8 sekundy */
-            transition: top 0.5s ease-in-out, left 0.8s ease-in-out, background-color 0.3s;
+            /* Właściwość transition odpowiada za płynne przesuwanie w 0.5 i 0.8 sekundy oraz płynną zmianę koloru */
+            transition: top 0.5s ease-in-out, left 0.8s ease-in-out, background-color 0.3s ease-in-out;
         }
     </style>
 </head>
@@ -146,6 +146,9 @@
         // --- KROK 1: PŁYNNIE UCIEKAJĄCA CAPTCHA ---
         let captchaClicks = 0;
         let runawayInterval; 
+        
+        // Zestaw kolorów do losowania (aby zawsze wyglądały ładnie i czytelnie)
+        const buttonColors = ['#9b59b6', '#3498db', '#e67e22', '#1abc9c', '#2ecc71', '#f1c40f', '#d35400', '#34495e', '#e74c3c'];
 
         // Funkcja odpowiedzialna za losowanie nowej pozycji
         function moveButton() {
@@ -164,6 +167,11 @@
 
         function catchCaptcha() {
             captchaClicks++;
+            let btn = document.getElementById('runaway-btn');
+
+            // Zmiana koloru na losowy po każdym kliknięciu
+            let randomColor = buttonColors[Math.floor(Math.random() * buttonColors.length)];
+            btn.style.backgroundColor = randomColor;
             
             // Wymagamy 22 kliknięć do przejścia dalej
             if(captchaClicks >= 22) {
@@ -171,19 +179,19 @@
                 clearInterval(runawayInterval); 
                 
                 // Resetujemy styl przycisku, by w innych krokach nie psuł wyglądu
-                let btn = document.getElementById('runaway-btn');
                 btn.style.position = 'relative';
                 btn.style.top = 'auto';
                 btn.style.left = 'auto';
                 btn.style.transition = 'none'; 
+                btn.style.backgroundColor = '#e74c3c'; // Przywracamy domyślny czerwony kolor
                 
                 goToStep(1, 2);
             } 
-            // Tutaj dodaliśmy nowy warunek: po 5 kliknięciach zacznij uciekać!
+            // Po 5 kliknięciach zacznij uciekać!
             else if (captchaClicks === 5) {
                 // Od razu wykonujemy pierwszy skok, żeby nie czekać
                 moveButton();
-                // Uruchamiamy powtarzanie skoków co 400 milisekund
+                // Uruchamiamy powtarzanie skoków co 500 milisekund
                 runawayInterval = setInterval(moveButton, 500);
             }
         }
