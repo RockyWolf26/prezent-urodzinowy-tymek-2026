@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urodzinowa Gra dla Ciebie!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c3e50;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background-color: #ecf0f1;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            max-width: 90%;
+            width: 400px;
+            position: relative;
+        }
+        .step {
+            display: none;
+        }
+        /* Pokazujemy tylko krok 1 na start */
+        #step1 {
+            display: block;
+        }
+        input[type="text"], input[type="range"] {
+            width: 80%;
+            padding: 10px;
+            margin: 15px 0;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #c0392b;
+        }
+        .error {
+            color: #c0392b;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        
+        /* NOWY STYL DLA UCIEKAJĄCEGO PRZYCISKU */
+        #runaway-btn {
+            position: fixed; /* Od razu pozycjonujemy go względem całego okna */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Zapewnia wyśrodkowanie na start */
+            z-index: 9999; 
+            /* Właściwość transition odpowiada za płynne przesuwanie w 0.4 i 0.8 sekundy */
+            transition: top 0.5s ease-in-out, left 0.8s ease-in-out, background-color 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div id="step1" class="step">
+            <h2>Weryfikacja bezpieczeństwa 🤖</h2>
+            <p>Zanim zaczniesz, udowodnij, że nie jesteś robotem. Kliknij poniższy przycisk 22 razy.</p>
+            <div style="height: 100px;">
+                <button id="runaway-btn" onclick="catchCaptcha()">Nie jestem robotem</button>
+            </div>
+        </div>
+
+        <div id="step2" class="step">
+            <h2>Zagadka #1 🕵️‍♂️</h2>
+            <p>Udało Ci się przejść weryfikację. Teraz zagadka: należy do Ciebie, ale inni używają tego częściej niż Ty. Co to?</p>
+            <input type="text" id="answer2" placeholder="Wpisz odpowiedź...">
+            <br>
+            <button onclick="checkStep2()">Sprawdź</button>
+            <p id="error2" class="error">Zła odpowiedź. Myśl dalej!</p>
+        </div>
+
+        <div id="step3" class="step">
+            <h2>Zagadka #2: Rebus 🧩</h2>
+            <p>Rozwiąż poniższy rebus:</p>
+            <img src="https://via.placeholder.com/300x150?text=TUTAJ+B%C4%98DZIE+TW%C3%93J+REBUS" alt="Rebus">
+            <input type="text" id="answer3" placeholder="Hasło z rebusu...">
+            <br>
+            <button onclick="checkStep3()">Sprawdź</button>
+            <p id="error3" class="error">Niestety, to nie to!</p>
+        </div>
+
+        <div id="step4" class="step">
+            <h2>Zagadka #3: Kalibracja ⚙️</h2>
+            <p>Ustaw na suwaku <strong>dokładnie liczbę Twoich lat</strong>, aby odblokować system.</p>
+            <p>Wybrana wartość: <strong id="slider-value">...</strong></p>
+            <input type="range" id="age-slider" min="0" max="249" value="0" oninput="updateSliderValue()">
+            <br>
+            <button onclick="checkStep4()">Zatwierdź</button>
+            <p id="error4" class="error">Zła wartość kalibracji!</p>
+        </div>
+
+        <div id="step5" class="step">
+            <h2>Ostatnie Starcie! ⚡</h2>
+            <p>Udowodnij, że naprawdę zależy Ci na prezencie. Masz <strong>3 sekundy</strong>, by kliknąć przycisk 10 razy!</p>
+            <button onclick="speedTest()">KLIKAJ!</button>
+            <p id="clicks-counter">Kliknięcia: 0</p>
+            <p id="error5" class="error">Za wolno! Próbuj ponownie.</p>
+        </div>
+
+        <div id="step6" class="step">
+            <h2>Udało się! 🎉🎂</h2>
+            <p>Przeszedłeś wszystkie moje próby! Jesteś mistrzem.</p>
+            <p>Oto obiecany prezent:</p>
+            <a href="LINK_DO_TWOJEGO_PDF.pdf" target="_blank" style="display:inline-block; padding:10px 20px; background:#27ae60; color:white; text-decoration:none; border-radius:5px; font-weight:bold;">Odbierz Voucher</a>
+        </div>
+
+    </div>
+
+    <script>
+        // --- FUNKCJA POMOCNICZA DO ZMIANY KROKÓW ---
+        function goToStep(current, next) {
+            document.getElementById('step' + current).style.display = 'none';
+            document.getElementById('step' + next).style.display = 'block';
+        }
+
+        // --- KROK 1: PŁYNNIE UCIEKAJĄCA CAPTCHA ---
+        let captchaClicks = 0;
+        let runawayInterval; 
+
+        // Funkcja odpowiedzialna za losowanie nowej pozycji
+        function moveButton() {
+            let btn = document.getElementById('runaway-btn');
+            
+            // Usuwamy wyśrodkowanie, aby przycisk dokładnie słuchał nowych współrzędnych
+            btn.style.transform = 'none'; 
+            
+            // Losujemy pozycję od 10% do 80% ekranu
+            let newTop = Math.random() * 70 + 10; 
+            let newLeft = Math.random() * 70 + 10; 
+            
+            btn.style.top = newTop + "vh"; 
+            btn.style.left = newLeft + "vw"; 
+        }
+
+        function catchCaptcha() {
+            captchaClicks++;
+            
+            // Wymagamy 22 kliknięć do przejścia dalej
+            if(captchaClicks >= 22) {
+                // Zatrzymujemy automatyczne poruszanie się
+                clearInterval(runawayInterval); 
+                
+                // Resetujemy styl przycisku, by w innych krokach nie psuł wyglądu
+                let btn = document.getElementById('runaway-btn');
+                btn.style.position = 'relative';
+                btn.style.top = 'auto';
+                btn.style.left = 'auto';
+                btn.style.transition = 'none'; 
+                
+                goToStep(1, 2);
+            } 
+            // Tutaj dodaliśmy nowy warunek: po 5 kliknięciach zacznij uciekać!
+            else if (captchaClicks === 5) {
+                // Od razu wykonujemy pierwszy skok, żeby nie czekać
+                moveButton();
+                // Uruchamiamy powtarzanie skoków co 400 milisekund
+                runawayInterval = setInterval(moveButton, 500);
+            }
+        }
+
+        // --- KROK 2: ZAGADKA TEKSTOWA ---
+        function checkStep2() {
+            let answer = document.getElementById('answer2').value.toLowerCase().trim();
+            if(answer === "imię" || answer === "imie") {
+                goToStep(2, 3);
+            } else {
+                document.getElementById('error2').style.display = 'block';
+            }
+        }
+
+        // --- KROK 3: REBUS ---
+        function checkStep3() {
+            let answer = document.getElementById('answer3').value.toLowerCase().trim();
+            if(answer === "programowanie") {
+                goToStep(3, 4);
+            } else {
+                document.getElementById('error3').style.display = 'block';
+            }
+        }
+
+        // --- KROK 4: CHAOTYCZNY SUWAK WIEKOWY ---
+        let chaoticAges = [];
+        let targetAge = 24; 
+
+        for(let i = 1; i <= 250; i++) {
+            chaoticAges.push(i);
+        }
+        if(!chaoticAges.includes(targetAge)) {
+            chaoticAges.push(targetAge);
+            document.getElementById('age-slider').max = chaoticAges.length - 1;
+        }
+
+        chaoticAges.sort(() => Math.random() - 0.5);
+
+        function updateSliderValue() {
+            let sliderPosition = document.getElementById('age-slider').value;
+            let actualValue = chaoticAges[sliderPosition];
+            document.getElementById('slider-value').innerText = actualValue;
+        }
+
+        updateSliderValue();
+
+        function checkStep4() {
+            let sliderPosition = document.getElementById('age-slider').value;
+            let selectedAge = chaoticAges[sliderPosition];
+            
+            if(selectedAge === targetAge) {
+                goToStep(4, 5);
+            } else {
+                document.getElementById('error4').style.display = 'block';
+            }
+        }
+
+        // --- KROK 5: TEST SZYBKOŚCI ---
+        let clicks = 0;
+        let timerStarted = false;
+
+        function speedTest() {
+            let errorMsg = document.getElementById('error5');
+            let counterMsg = document.getElementById('clicks-counter');
+            errorMsg.style.display = 'none';
+
+            if(!timerStarted) {
+                timerStarted = true;
+                setTimeout(() => {
+                    if(clicks < 10) {
+                        errorMsg.style.display = 'block';
+                        clicks = 0;
+                        timerStarted = false;
+                        counterMsg.innerText = `Kliknięcia: ${clicks}`;
+                    }
+                }, 3000);
+            }
+
+            clicks++;
+            counterMsg.innerText = `Kliknięcia: ${clicks}`;
+
+            if(clicks >= 10) {
+                goToStep(5, 6);
+            }
+        }
+    </script>
+
+</body>
+</html>
