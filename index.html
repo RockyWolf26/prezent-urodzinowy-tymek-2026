@@ -15,20 +15,35 @@
             min-height: 100vh;
             margin: 0;
             text-align: center;
+            
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            transition: background-image 0.5s ease-in-out; 
+            overflow: hidden; 
         }
         .container {
-            background-color: #ecf0f1;
+            background-color: rgba(236, 240, 241, 0.95); 
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
             max-width: 90%;
             width: 400px;
             position: relative;
+            transition: all 0.5s ease-in-out; 
         }
+        
+        .container.fullscreen {
+            width: 95vw;
+            max-width: 1200px;
+            height: 90vh;
+            padding: 15px;
+        }
+
         .step {
             display: none;
         }
-        /* Pokazujemy tylko krok 1 na start */
         #step1 {
             display: block;
         }
@@ -66,25 +81,171 @@
             margin: 10px 0;
         }
         
-        /* NOWY STYL DLA UCIEKAJĄCEGO PRZYCISKU */
         #runaway-btn {
-            position: fixed; /* Od razu pozycjonujemy go względem całego okna */
-            top: 65%; /* ZMIANA: Obniżono z 50% na 65%, aby nie nachodził na tekst */
+            position: fixed; 
+            top: 65%; 
             left: 50%;
-            transform: translate(-50%, -50%); /* Zapewnia wyśrodkowanie na start */
+            transform: translate(-50%, -50%); 
             z-index: 9999; 
-            /* Właściwość transition odpowiada za płynne przesuwanie w 0.5 i 0.8 sekundy oraz płynną zmianę koloru */
-            transition: top 0.5s ease-in-out, left 0.8s ease-in-out, background-color 0.3s ease-in-out;
+            transition: top 0.7s ease-in-out, left 0.7s ease-in-out, background-color 0.3s ease-in-out;
+        }
+
+        #dev-btn {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: #34495e;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 5px;
+            z-index: 10000;
+            opacity: 0.5;
+            border: 1px solid white;
+        }
+        #dev-btn:hover {
+            opacity: 1;
+        }
+
+        /* ZŁOŚLIWE TEKSTY */
+        .taunt-text {
+            position: fixed;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px black, -1px -1px 2px black; 
+            pointer-events: none; 
+            z-index: 10000;
+            animation: floatAndFade 1s ease-out forwards; 
+        }
+
+        @keyframes floatAndFade {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            50% { transform: translate(-50%, -80%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -150%) scale(1); opacity: 0; }
+        }
+
+        /* ------------------------------------------------ */
+        /* STYLE - MINIGRA 1: BURGERY (KROK 6)              */
+        /* ------------------------------------------------ */
+        #game-area {
+            width: 100%;
+            background-color: #87CEEB; 
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-top: 15px;
+            touch-action: none; 
+            flex-grow: 1; 
+        }
+        #player-face {
+            position: absolute;
+            bottom: 10px;
+            width: 120px; 
+            height: auto; 
+            object-fit: cover;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+        .falling-item {
+            position: absolute;
+            width: 80px; 
+            height: 80px;
+            object-fit: contain;
+            z-index: 4;
+        }
+        #lives-display {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #e74c3c;
+            z-index: 6;
+            text-shadow: 1px 1px 2px white;
+        }
+        #countdown-screen, #game-over-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: none; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        #countdown-screen { background-color: rgba(0, 0, 0, 0.8); z-index: 9; }
+        #game-over-screen { background-color: rgba(0, 0, 0, 0.9); }
+        #countdown-screen h1 {
+            font-size: 60px; color: #f1c40f; text-shadow: 0 0 20px #e67e22;
+        }
+        #game-over-text {
+            color: #e74c3c; font-size: 48px; margin-bottom: 20px; text-align: center;
+        }
+
+        /* ------------------------------------------------ */
+        /* STYLE - MINIGRA 2: SPADANIE (KROK 7)             */
+        /* ------------------------------------------------ */
+        #skyfall-area {
+            width: 100%;
+            background-color: #87CEFA; 
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-top: 15px;
+            touch-action: none; 
+            flex-grow: 1; 
+        }
+        #skyfall-player {
+            position: absolute;
+            top: 20px; 
+            width: 120px; 
+            height: auto; 
+            object-fit: cover;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+        .cloud-item {
+            position: absolute;
+            width: 130px; 
+            height: 80px;
+            object-fit: contain;
+            z-index: 4;
+            opacity: 0.9;
+        }
+        #skyfall-lives-display {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #e74c3c;
+            z-index: 6;
+            text-shadow: 1px 1px 2px white;
+        }
+        #skyfall-game-over-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <button id="dev-btn" onclick="devNextStep()">Test: Pomiń krok ⏭️</button>
+
+    <div class="container" id="main-container">
         
         <div id="step1" class="step">
             <h2>Weryfikacja bezpieczeństwa 🤖</h2>
-            <p>Zanim zaczniesz, udowodnij, że nie jesteś robotem. Kliknij poniższy przycisk 22 razy.</p>
+            <p>Zanim zaczniesz, udowodnij, że nie jesteś robotem.</p>
             <div style="height: 100px;">
                 <button id="runaway-btn" onclick="catchCaptcha()">Nie jestem robotem</button>
             </div>
@@ -101,8 +262,7 @@
 
         <div id="step3" class="step">
             <h2>Zagadka #2: Rebus 🧩</h2>
-            <p>Rozwiąż poniższy rebus:</p>
-            <img src="https://via.placeholder.com/300x150?text=TUTAJ+B%C4%98DZIE+TW%C3%93J+REBUS" alt="Rebus">
+            <img src="rebus.jpg" alt="Rebus">
             <input type="text" id="answer3" placeholder="Hasło z rebusu...">
             <br>
             <button onclick="checkStep3()">Sprawdź</button>
@@ -120,163 +280,612 @@
         </div>
 
         <div id="step5" class="step">
-            <h2>Ostatnie Starcie! ⚡</h2>
-            <p>Udowodnij, że naprawdę zależy Ci na prezencie. Masz <strong>3 sekundy</strong>, by kliknąć przycisk 10 razy!</p>
+            <h2>Szybkie palce #4</h2>
+            <p>Udowodnij, że naprawdę zależy Ci na prezencie. Masz <strong>60 sekund</strong>, by kliknąć przycisk 300 razy!</p>
+            <p id="time-left" style="font-size: 24px; font-weight: bold; color: #e74c3c;">Pozostały czas: 60s</p>
             <button onclick="speedTest()">KLIKAJ!</button>
             <p id="clicks-counter">Kliknięcia: 0</p>
             <p id="error5" class="error">Za wolno! Próbuj ponownie.</p>
         </div>
 
         <div id="step6" class="step">
+            <h2 id="game-title" style="margin-top: 0;">Złap 10 burgerów! 🍔</h2>
+            <p id="game-subtitle" style="margin-bottom: 5px;">Przesuwaj palcem lub myszką, by sterować.</p>
+            
+            <div id="game-area">
+                <div id="lives-display">❤️❤️❤️</div>
+                <img id="player-face" src="twarz.png" alt="Twarz gracza">
+                
+                <div id="countdown-screen">
+                    <h1 id="countdown-text">Are you ready???</h1>
+                </div>
+
+                <div id="game-over-screen">
+                    <h1 id="game-over-text">Kiepski refleks</h1>
+                    <button onclick="resetAndStartGame()">Zagraj ponownie</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="step7" class="step">
+            <h2 id="skyfall-title" style="margin-top: 0;">Swobodne spadanie! 🪂</h2>
+            <p id="skyfall-subtitle" style="margin-bottom: 5px;">Czas do lądowania: <span id="skyfall-timer-display" style="color:#e74c3c; font-weight:bold;">60</span>s</p>
+            
+            <div id="skyfall-area">
+                <div id="skyfall-lives-display">❤️❤️❤️</div>
+                <img id="skyfall-player" src="twarz2.png" alt="Spadająca postać">
+                
+                <div id="skyfall-game-over-screen">
+                    <h1 style="color: #e74c3c; font-size: 48px; margin-bottom: 20px;">Zderzenie!</h1>
+                    <button onclick="resetAndStartSkyfall()">Zagraj ponownie</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="step8" class="step">
             <h2>Udało się! 🎉🎂</h2>
             <p>Przeszedłeś wszystkie moje próby! Jesteś mistrzem.</p>
+            
+            <img src="ekipa.jpg" alt="Nasza Ekipa">
+            <h3 style="color: #2c3e50; margin: 15px 0;">Ekipa czeka na kolejną demolkę!</h3>
+
             <p>Oto obiecany prezent:</p>
-            <a href="LINK_DO_TWOJEGO_PDF.pdf" target="_blank" style="display:inline-block; padding:10px 20px; background:#27ae60; color:white; text-decoration:none; border-radius:5px; font-weight:bold;">Odbierz Voucher</a>
+            <a href="voucher.pdf" target="_blank" style="display:inline-block; padding:10px 20px; background:#27ae60; color:white; text-decoration:none; border-radius:5px; font-weight:bold; margin-bottom: 10px;">Odbierz Voucher</a>
         </div>
 
     </div>
 
     <script>
-        // --- FUNKCJA POMOCNICZA DO ZMIANY KROKÓW ---
-        function goToStep(current, next) {
-            document.getElementById('step' + current).style.display = 'none';
-            document.getElementById('step' + next).style.display = 'block';
+        // --- SYSTEM ZASOBÓW ---
+        const assets = {
+            1: { bg: "tlo1.jpg", audio: "muzyka1.mp3" },
+            2: { bg: "tlo2.jpg", audio: "muzyka2.mp3" },
+            3: { bg: "tlo3.jpg", audio: "muzyka3.mp3" },
+            4: { bg: "tlo4.jpg", audio: "muzyka4.mp3" },
+            5: { bg: "tlo5.jpg", audio: "muzyka5.mp3" },
+            6: { bg: "tlo6.jpg", audio: "muzyka6.mp3" }, 
+            7: { bg: "tlo7.jpg", audio: "muzyka7.mp3" }, 
+            8: { bg: "tlo8.jpg", audio: "muzyka8.mp3" }  
+        };
+
+        let bgAudio = new Audio();
+        bgAudio.loop = true; 
+
+        function applyAssetsForStep(stepNum) {
+            let config = assets[stepNum];
+            if (config && config.bg !== "") {
+                document.body.style.backgroundImage = `url('${config.bg}')`;
+            } else {
+                document.body.style.backgroundImage = "none";
+            }
+            if (config && config.audio !== "") {
+                if (!bgAudio.src.endsWith(config.audio)) {
+                    bgAudio.src = config.audio;
+                    bgAudio.play().catch(() => console.log("Oczekiwanie na kliknięcie użytkownika..."));
+                }
+            } else {
+                bgAudio.pause(); 
+            }
         }
 
-        // --- KROK 1: PŁYNNIE UCIEKAJĄCA CAPTCHA ---
+        // --- ZARZĄDZANIE KROKAMI ---
+        let currentActiveStep = 1;
+
+        function goToStep(current, next) {
+            let currentStepEl = document.getElementById('step' + current);
+            let nextStepEl = document.getElementById('step' + next);
+            let container = document.getElementById('main-container');
+
+            currentStepEl.style.display = 'none';
+            currentActiveStep = next;
+            applyAssetsForStep(next);
+
+            if (next === 6 || next === 7) {
+                container.classList.add('fullscreen');
+                nextStepEl.style.display = 'flex';
+                nextStepEl.style.flexDirection = 'column';
+                nextStepEl.style.height = '100%';
+                
+                if (next === 6) resetAndStartGame();
+                if (next === 7) resetAndStartSkyfall();
+            } else {
+                container.classList.remove('fullscreen');
+                nextStepEl.style.display = 'block';
+            }
+        }
+
+        applyAssetsForStep(1);
+
+        document.body.addEventListener('click', () => {
+            if (bgAudio.paused && bgAudio.src) bgAudio.play();
+        }, { once: true });
+
+        // --- FUNKCJA TESTOWA ---
+        function devNextStep() {
+            if (currentActiveStep < 8) {
+                if(runawayInterval) clearInterval(runawayInterval);
+                let btn = document.getElementById('runaway-btn');
+                if(btn) btn.style.display = 'none'; 
+
+                if(currentActiveStep === 6) stopMinigame();
+                if(currentActiveStep === 7) stopSkyfall();
+
+                goToStep(currentActiveStep, currentActiveStep + 1);
+            } else {
+                alert("Jesteś już na ostatnim kroku!");
+            }
+        }
+
+        // --- ZŁOŚLIWE TEKSTY PRZY PUDLE ---
+        const taunts = [
+            "Ale jesteś wolny!", "Babcia szybciej by to zrobiła!", "Pudło!", 
+            "Nawet nie byłeś blisko...", "Może użyj obu rąk?", "Celuj lepiej!",
+            "Okulary by się przydały!", "Mój pies klika celniej.", "Zasnąłeś?", 
+            "Trochę wstyd...", "Żenada...", "Słabizna...", "Za wolno!", 
+            "Gdzie klikasz?!", "Musisz poćwiczyć refleks."
+        ];
+
+        document.addEventListener('click', function(event) {
+            if (currentActiveStep === 1 && event.target.id !== 'runaway-btn' && event.target.id !== 'dev-btn') {
+                let tauntEl = document.createElement('div');
+                let randomText = taunts[Math.floor(Math.random() * taunts.length)];
+                tauntEl.innerText = randomText;
+                tauntEl.className = 'taunt-text';
+                tauntEl.style.left = event.clientX + 'px';
+                tauntEl.style.top = event.clientY + 'px';
+                document.body.appendChild(tauntEl);
+                setTimeout(() => tauntEl.remove(), 1000);
+            }
+        });
+
+        // --- LOGIKA PRZYCISKU ---
         let captchaClicks = 0;
         let runawayInterval; 
-        
-        // Zestaw kolorów do losowania (aby zawsze wyglądały ładnie i czytelnie)
         const buttonColors = ['#9b59b6', '#3498db', '#e67e22', '#1abc9c', '#2ecc71', '#f1c40f', '#d35400', '#34495e', '#e74c3c'];
 
-        // Funkcja odpowiedzialna za losowanie nowej pozycji
         function moveButton() {
             let btn = document.getElementById('runaway-btn');
-            
-            // Usuwamy wyśrodkowanie, aby przycisk dokładnie słuchał nowych współrzędnych
             btn.style.transform = 'none'; 
-            
-            // Losujemy pozycję od 10% do 80% ekranu
             let newTop = Math.random() * 70 + 10; 
             let newLeft = Math.random() * 70 + 10; 
-            
             btn.style.top = newTop + "vh"; 
             btn.style.left = newLeft + "vw"; 
+        }
+
+        function updateCaptchaSpeed(intervalTime, transitionTime) {
+            clearInterval(runawayInterval);
+            let btn = document.getElementById('runaway-btn');
+            btn.style.transition = `top ${transitionTime}s ease-in-out, left ${transitionTime}s ease-in-out, background-color 0.3s ease-in-out`;
+            runawayInterval = setInterval(moveButton, intervalTime);
         }
 
         function catchCaptcha() {
             captchaClicks++;
             let btn = document.getElementById('runaway-btn');
-
-            // Zmiana koloru na losowy po każdym kliknięciu
-            let randomColor = buttonColors[Math.floor(Math.random() * buttonColors.length)];
-            btn.style.backgroundColor = randomColor;
+            btn.style.backgroundColor = buttonColors[Math.floor(Math.random() * buttonColors.length)];
             
-            // Wymagamy 22 kliknięć do przejścia dalej
-            if(captchaClicks >= 22) {
-                // Zatrzymujemy automatyczne poruszanie się
+            if(captchaClicks >= 24) {
                 clearInterval(runawayInterval); 
-                
-                // Resetujemy styl przycisku, by w innych krokach nie psuł wyglądu
                 btn.style.position = 'relative';
                 btn.style.top = 'auto';
                 btn.style.left = 'auto';
                 btn.style.transition = 'none'; 
-                btn.style.backgroundColor = '#e74c3c'; // Przywracamy domyślny czerwony kolor
-                
+                btn.style.backgroundColor = '#e74c3c'; 
                 goToStep(1, 2);
             } 
-            // Po 5 kliknięciach zacznij uciekać!
             else if (captchaClicks === 5) {
-                // Od razu wykonujemy pierwszy skok, żeby nie czekać
                 moveButton();
-                // Uruchamiamy powtarzanie skoków co 500 milisekund
-                runawayInterval = setInterval(moveButton, 500);
+                updateCaptchaSpeed(800, 0.7);
             }
+            else if (captchaClicks === 10) { updateCaptchaSpeed(600, 0.5); }
+            else if (captchaClicks === 15) { updateCaptchaSpeed(400, 0.3); }
+            else if (captchaClicks === 20) { updateCaptchaSpeed(250, 0.15); }
         }
 
-        // --- KROK 2: ZAGADKA TEKSTOWA ---
+        // --- ZAGADKI 2, 3, 4, 5 ---
         function checkStep2() {
             let answer = document.getElementById('answer2').value.toLowerCase().trim();
-            if(answer === "imię" || answer === "imie") {
-                goToStep(2, 3);
-            } else {
-                document.getElementById('error2').style.display = 'block';
-            }
+            if(answer === "imię" || answer === "imie") goToStep(2, 3);
+            else document.getElementById('error2').style.display = 'block';
         }
 
-        // --- KROK 3: REBUS ---
         function checkStep3() {
             let answer = document.getElementById('answer3').value.toLowerCase().trim();
-            if(answer === "programowanie") {
-                goToStep(3, 4);
-            } else {
-                document.getElementById('error3').style.display = 'block';
-            }
+            if(answer === "koń z valony" || answer === "kon z valony") goToStep(3, 4);
+            else document.getElementById('error3').style.display = 'block';
         }
 
-        // --- KROK 4: CHAOTYCZNY SUWAK WIEKOWY ---
         let chaoticAges = [];
         let targetAge = 24; 
-
-        for(let i = 1; i <= 250; i++) {
-            chaoticAges.push(i);
-        }
-        if(!chaoticAges.includes(targetAge)) {
-            chaoticAges.push(targetAge);
-            document.getElementById('age-slider').max = chaoticAges.length - 1;
-        }
-
+        for(let i = 1; i <= 250; i++) chaoticAges.push(i);
+        if(!chaoticAges.includes(targetAge)) chaoticAges.push(targetAge);
         chaoticAges.sort(() => Math.random() - 0.5);
 
         function updateSliderValue() {
             let sliderPosition = document.getElementById('age-slider').value;
-            let actualValue = chaoticAges[sliderPosition];
-            document.getElementById('slider-value').innerText = actualValue;
+            document.getElementById('slider-value').innerText = chaoticAges[sliderPosition];
         }
-
         updateSliderValue();
 
         function checkStep4() {
             let sliderPosition = document.getElementById('age-slider').value;
-            let selectedAge = chaoticAges[sliderPosition];
-            
-            if(selectedAge === targetAge) {
-                goToStep(4, 5);
-            } else {
-                document.getElementById('error4').style.display = 'block';
-            }
+            if(chaoticAges[sliderPosition] === targetAge) goToStep(4, 5);
+            else document.getElementById('error4').style.display = 'block';
         }
 
-        // --- KROK 5: TEST SZYBKOŚCI ---
         let clicks = 0;
         let timerStarted = false;
+        let clickTimerInterval; 
+        let timeLeft = 60;
 
         function speedTest() {
             let errorMsg = document.getElementById('error5');
             let counterMsg = document.getElementById('clicks-counter');
+            let timeLabel = document.getElementById('time-left');
             errorMsg.style.display = 'none';
 
             if(!timerStarted) {
                 timerStarted = true;
-                setTimeout(() => {
-                    if(clicks < 10) {
-                        errorMsg.style.display = 'block';
-                        clicks = 0;
-                        timerStarted = false;
-                        counterMsg.innerText = `Kliknięcia: ${clicks}`;
-                    }
-                }, 3000);
-            }
+                timeLeft = 60;
+                timeLabel.innerText = `Pozostały czas: ${timeLeft}s`;
 
+                clickTimerInterval = setInterval(() => {
+                    timeLeft--;
+                    timeLabel.innerText = `Pozostały czas: ${timeLeft}s`;
+                    if(timeLeft <= 0) {
+                        clearInterval(clickTimerInterval);
+                        if(clicks < 300) {
+                            errorMsg.style.display = 'block';
+                            clicks = 0;
+                            timerStarted = false;
+                            counterMsg.innerText = `Kliknięcia: ${clicks}`;
+                            timeLabel.innerText = `Pozostały czas: 60s`;
+                        }
+                    }
+                }, 1000); 
+            }
             clicks++;
             counterMsg.innerText = `Kliknięcia: ${clicks}`;
-
-            if(clicks >= 10) {
+            if(clicks >= 300) {
+                clearInterval(clickTimerInterval); 
                 goToStep(5, 6);
             }
         }
+
+        // ==============================================================
+        // KROK 6 - MINIGRA (ZŁAP BURGERY)
+        // ==============================================================
+        const gameArea = document.getElementById('game-area');
+        const playerFace = document.getElementById('player-face');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const gameOverText = document.getElementById('game-over-text');
+        const countdownScreen = document.getElementById('countdown-screen');
+        const countdownText = document.getElementById('countdown-text');
+        const gameTitle = document.getElementById('game-title');
+        const gameSubtitle = document.getElementById('game-subtitle');
+        const livesDisplay = document.getElementById('lives-display');
+
+        let isGameRunning = false;
+        let gamePhase = 1; 
+        let burgerScore = 0;
+        let lives = 3;
+        let fallingItemsArray = [];
+        let itemSpawnerInterval;
+        let dildoSurvivalTimeout;
+        let animationFrameId;
+
+        function updateLivesDisplay() {
+            let hearts = '';
+            for(let i=0; i<lives; i++) hearts += '❤️';
+            livesDisplay.innerText = hearts;
+        }
+
+        function movePlayer(e) {
+            if(!isGameRunning || gamePhase === 3) return; 
+            let rect = gameArea.getBoundingClientRect();
+            let x = e.type.includes('mouse') ? (e.clientX - rect.left) : (e.touches[0].clientX - rect.left);
+            
+            let halfWidth = playerFace.clientWidth / 2;
+            if(x < halfWidth) x = halfWidth;
+            if(x > rect.width - halfWidth) x = rect.width - halfWidth;
+            playerFace.style.left = x + 'px';
+        }
+
+        gameArea.addEventListener('mousemove', movePlayer);
+        gameArea.addEventListener('touchmove', movePlayer, {passive: false});
+
+        function spawnFallingItem() {
+            if(!isGameRunning || gamePhase === 3) return;
+            
+            let type = 'burger';
+            if (gamePhase === 1) type = 'burger';
+            else if (gamePhase === 2) type = Math.random() < 0.50 ? 'bomba' : 'burger';
+            else if (gamePhase === 4) type = 'dildo';
+            
+            let item = document.createElement('img');
+            item.src = (type === 'burger') ? 'burger.png' : ((type === 'bomba') ? 'bomba.png' : 'dildo.png'); 
+            item.className = 'falling-item';
+            
+            let randomX = Math.random() * (gameArea.clientWidth - 80);
+            item.style.left = randomX + 'px';
+            item.style.top = '-80px'; 
+            
+            gameArea.appendChild(item);
+            
+            let speed = 20; 
+            if (type === 'bomba') speed = 20;
+            if (type === 'dildo') speed = 12; 
+
+            fallingItemsArray.push({
+                element: item, type: type, y: -80, speed: speed 
+            });
+        }
+
+        function updateGameLoop() {
+            if(!isGameRunning) return;
+
+            let playerRect = playerFace.getBoundingClientRect();
+
+            for(let i = fallingItemsArray.length - 1; i >= 0; i--) {
+                let itemObj = fallingItemsArray[i];
+                itemObj.y += itemObj.speed;
+                itemObj.element.style.top = itemObj.y + 'px';
+
+                let itemRect = itemObj.element.getBoundingClientRect();
+                let shrink = 15; 
+                let isColliding = !(
+                    ((playerRect.top + shrink) > (itemRect.bottom - shrink)) ||
+                    ((playerRect.bottom - shrink) < (itemRect.top + shrink)) ||
+                    ((playerRect.left + shrink) > (itemRect.right - shrink)) ||
+                    ((playerRect.right - shrink) < (itemRect.left + shrink))
+                );
+
+                if (isColliding) {
+                    if(itemObj.type === 'burger') {
+                        burgerScore++;
+                        itemObj.element.remove();
+                        fallingItemsArray.splice(i, 1);
+                        
+                        if(burgerScore === 10 && gamePhase === 1) {
+                            gamePhase = 2;
+                            gameTitle.innerText = `Złapano: ${burgerScore} / 20. UWAŻAJ NA BOMBY! 💣`;
+                            gameTitle.style.color = '#e74c3c';
+                        } 
+                        else if(burgerScore >= 20 && gamePhase === 2) {
+                            gameTitle.innerText = `Złapano: ${burgerScore} / 20 🍔`;
+                            startTransitionPhase();
+                        } else {
+                            let target = gamePhase === 1 ? 10 : 20;
+                            if (gamePhase === 1) gameTitle.innerText = `Złapano: ${burgerScore} / ${target} 🍔`;
+                            else gameTitle.innerText = `Złapano: ${burgerScore} / ${target}. UWAŻAJ NA BOMBY! 💣`;
+                        }
+                    } else if (itemObj.type === 'bomba') {
+                        lives--;
+                        updateLivesDisplay();
+                        itemObj.element.remove();
+                        fallingItemsArray.splice(i, 1);
+                        
+                        gameArea.style.backgroundColor = '#e74c3c';
+                        setTimeout(() => { if(isGameRunning) gameArea.style.backgroundColor = '#87CEEB'; }, 100);
+
+                        if(lives <= 0) triggerGameOver("Kiepski refleks");
+                    } else if (itemObj.type === 'dildo') {
+                        triggerGameOver("HA! GAY!");
+                    }
+                } 
+                else if (itemObj.y > gameArea.clientHeight) {
+                    itemObj.element.remove();
+                    fallingItemsArray.splice(i, 1);
+                }
+            }
+            animationFrameId = requestAnimationFrame(updateGameLoop);
+        }
+
+        function startTransitionPhase() {
+            gamePhase = 3;
+            clearInterval(itemSpawnerInterval);
+            fallingItemsArray.forEach(item => item.element.remove());
+            fallingItemsArray = [];
+            
+            countdownScreen.style.display = 'flex';
+            countdownText.innerText = "Are you ready???";
+            
+            setTimeout(() => { if(isGameRunning) countdownText.innerText = "3"; }, 2000);
+            setTimeout(() => { if(isGameRunning) countdownText.innerText = "2"; }, 3000);
+            setTimeout(() => { if(isGameRunning) countdownText.innerText = "1"; }, 4000);
+            setTimeout(() => { 
+                if(isGameRunning) {
+                    countdownScreen.style.display = 'none';
+                    startDildoPhase();
+                }
+            }, 5000);
+        }
+
+        function startDildoPhase() {
+            gamePhase = 4;
+            gameTitle.innerText = `DESZCZ DILDO! OMIJAJ!`;
+            gameTitle.style.color = '#9b59b6';
+            gameSubtitle.innerText = `Przetrwaj 10 sekund!`;
+            
+            itemSpawnerInterval = setInterval(spawnFallingItem, 150);
+
+            dildoSurvivalTimeout = setTimeout(() => {
+                if(isGameRunning) {
+                    stopMinigame();
+                    goToStep(6, 7); 
+                }
+            }, 10000); 
+        }
+
+        function triggerGameOver(message) {
+            stopMinigame();
+            gameOverText.innerText = message;
+            gameOverScreen.style.display = 'flex'; 
+        }
+
+        function stopMinigame() {
+            isGameRunning = false;
+            clearInterval(itemSpawnerInterval);
+            clearTimeout(dildoSurvivalTimeout);
+            cancelAnimationFrame(animationFrameId);
+            gameArea.style.backgroundColor = '#87CEEB'; 
+        }
+
+        function resetAndStartGame() {
+            stopMinigame();
+            gameOverScreen.style.display = 'none';
+            countdownScreen.style.display = 'none';
+            gameTitle.innerText = `Złap 10 burgerów! 🍔`;
+            gameTitle.style.color = '#333';
+            gameSubtitle.innerText = `Przesuwaj palcem lub myszką, by sterować.`;
+            playerFace.style.left = '50%';
+            
+            fallingItemsArray.forEach(item => item.element.remove());
+            fallingItemsArray = [];
+            
+            burgerScore = 0;
+            lives = 3;
+            gamePhase = 1;
+            isGameRunning = true;
+            updateLivesDisplay();
+            
+            itemSpawnerInterval = setInterval(spawnFallingItem, 800);
+            animationFrameId = requestAnimationFrame(updateGameLoop);
+        }
+
+        // ==============================================================
+        // NOWOŚĆ: KROK 7 - MINIGRA (SPADANIE W CHMURACH)
+        // ==============================================================
+        const skyfallArea = document.getElementById('skyfall-area');
+        const skyfallPlayer = document.getElementById('skyfall-player');
+        const skyfallGameOverScreen = document.getElementById('skyfall-game-over-screen');
+        const skyfallTimerDisplay = document.getElementById('skyfall-timer-display');
+        const skyfallLivesDisplay = document.getElementById('skyfall-lives-display');
+
+        let isSkyfallRunning = false;
+        let skyfallLives = 3;
+        let skyfallTime = 60;
+        let skyfallClouds = [];
+        let skyfallSpawnerInterval;
+        let skyfallTimerInterval;
+        let skyfallAnimId;
+
+        function updateSkyfallLives() {
+            let h = '';
+            for(let i=0; i<skyfallLives; i++) h += '❤️';
+            skyfallLivesDisplay.innerText = h;
+        }
+
+        function moveSkyfallPlayer(e) {
+            if(!isSkyfallRunning) return;
+            let rect = skyfallArea.getBoundingClientRect();
+            let x = e.type.includes('mouse') ? (e.clientX - rect.left) : (e.touches[0].clientX - rect.left);
+            
+            let halfWidth = skyfallPlayer.clientWidth / 2;
+            if(x < halfWidth) x = halfWidth;
+            if(x > rect.width - halfWidth) x = rect.width - halfWidth;
+            skyfallPlayer.style.left = x + 'px';
+        }
+
+        skyfallArea.addEventListener('mousemove', moveSkyfallPlayer);
+        skyfallArea.addEventListener('touchmove', moveSkyfallPlayer, {passive: false});
+
+        function spawnCloud() {
+            if(!isSkyfallRunning) return;
+            
+            let cloud = document.createElement('img');
+            cloud.src = 'chmura.png'; 
+            cloud.className = 'cloud-item';
+            
+            let randomX = Math.random() * (skyfallArea.clientWidth - 130);
+            cloud.style.left = randomX + 'px';
+            let startY = skyfallArea.clientHeight + 50; 
+            cloud.style.top = startY + 'px';
+            
+            skyfallArea.appendChild(cloud);
+            
+            skyfallClouds.push({
+                element: cloud, y: startY, speed: 6 + Math.random() * 5 
+            });
+        }
+
+        function updateSkyfallLoop() {
+            if(!isSkyfallRunning) return;
+
+            let playerRect = skyfallPlayer.getBoundingClientRect();
+
+            for(let i = skyfallClouds.length - 1; i >= 0; i--) {
+                let cloudObj = skyfallClouds[i];
+                cloudObj.y -= cloudObj.speed; // Chmury pędzą w górę
+                cloudObj.element.style.top = cloudObj.y + 'px';
+
+                let cloudRect = cloudObj.element.getBoundingClientRect();
+                let shrink = 25; 
+                
+                let isColliding = !(
+                    ((playerRect.top + shrink) > (cloudRect.bottom - shrink)) ||
+                    ((playerRect.bottom - shrink) < (cloudRect.top + shrink)) ||
+                    ((playerRect.left + shrink) > (cloudRect.right - shrink)) ||
+                    ((playerRect.right - shrink) < (cloudRect.left + shrink))
+                );
+
+                if (isColliding) {
+                    skyfallLives--;
+                    updateSkyfallLives();
+                    cloudObj.element.remove();
+                    skyfallClouds.splice(i, 1);
+                    
+                    skyfallArea.style.backgroundColor = '#ecf0f1';
+                    setTimeout(() => { if(isSkyfallRunning) skyfallArea.style.backgroundColor = '#87CEFA'; }, 100);
+
+                    if(skyfallLives <= 0) {
+                        stopSkyfall();
+                        skyfallGameOverScreen.style.display = 'flex';
+                    }
+                } 
+                else if (cloudObj.y < -150) {
+                    cloudObj.element.remove();
+                    skyfallClouds.splice(i, 1);
+                }
+            }
+            skyfallAnimId = requestAnimationFrame(updateSkyfallLoop);
+        }
+
+        function stopSkyfall() {
+            isSkyfallRunning = false;
+            clearInterval(skyfallSpawnerInterval);
+            clearInterval(skyfallTimerInterval);
+            cancelAnimationFrame(skyfallAnimId);
+        }
+
+        function resetAndStartSkyfall() {
+            stopSkyfall();
+            skyfallGameOverScreen.style.display = 'none';
+            skyfallPlayer.style.left = '50%';
+            
+            skyfallClouds.forEach(c => c.element.remove());
+            skyfallClouds = [];
+            
+            skyfallLives = 3;
+            skyfallTime = 60;
+            updateSkyfallLives();
+            skyfallTimerDisplay.innerText = skyfallTime;
+            
+            isSkyfallRunning = true;
+            skyfallSpawnerInterval = setInterval(spawnCloud, 500); 
+            
+            skyfallTimerInterval = setInterval(() => {
+                skyfallTime--;
+                skyfallTimerDisplay.innerText = skyfallTime;
+                
+                if(skyfallTime <= 0) {
+                    stopSkyfall();
+                    goToStep(7, 8); // SUKCES! PRZEJŚCIE DO VOUCHERA
+                }
+            }, 1000);
+            skyfallAnimId = requestAnimationFrame(updateSkyfallLoop);
+        }
+
     </script>
 
 </body>
