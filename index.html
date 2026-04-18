@@ -141,7 +141,7 @@
         #player-face {
             position: absolute;
             bottom: 10px;
-            width: 100px; 
+            width: 120px; 
             height: auto; 
             object-fit: cover;
             left: 50%;
@@ -326,11 +326,14 @@
             <h2>Udało się! 🎉🎂</h2>
             <p>Przeszedłeś wszystkie moje próby! Jesteś mistrzem.</p>
             
-            <img src="ekipa.jpg" alt="Nasza Ekipa">
+            <img src="ekipa.jpg" alt="Nasza Ekipa" style="max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 10px;">
             <h3 style="color: #2c3e50; margin: 15px 0;">Ekipa czeka na kolejną demolkę!</h3>
 
             <p>Oto obiecany prezent:</p>
-            <a href="voucher.pdf" target="_blank" style="display:inline-block; padding:10px 20px; background:#27ae60; color:white; text-decoration:none; border-radius:5px; font-weight:bold; margin-bottom: 10px;">Odbierz Voucher</a>
+            
+            <a href="voucher.pdf" download="Voucher_Prezentowy.pdf" style="display:inline-block; padding:15px 30px; background:#27ae60; color:white; text-decoration:none; border-radius:8px; font-weight:bold; margin-bottom: 10px; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+                📥 Pobierz Voucher
+            </a>
         </div>
 
     </div>
@@ -707,7 +710,7 @@
             gameTitle.style.color = '#9b59b6';
             gameSubtitle.innerText = `Przetrwaj 10 sekund!`;
             
-            itemSpawnerInterval = setInterval(spawnFallingItem, 150);
+            itemSpawnerInterval = setInterval(spawnFallingItem, 400);
 
             dildoSurvivalTimeout = setTimeout(() => {
                 if(isGameRunning) {
