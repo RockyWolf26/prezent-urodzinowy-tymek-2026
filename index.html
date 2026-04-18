@@ -254,7 +254,7 @@
         <div id="step2" class="step">
             <h2>Zagadka #1 🕵️‍♂️</h2>
             <p>Udało Ci się przejść weryfikację. Teraz zagadka: należy do Ciebie, ale inni używają tego częściej niż Ty. Co to?</p>
-            <input type="text" id="answer2" placeholder="Wpisz odpowiedź...">
+            <input type="text" id="answer2" placeholder="Wpisz odpowiedź..." autocomplete="off">
             <br>
             <button onclick="checkStep2()">Sprawdź</button>
             <p id="error2" class="error">Zła odpowiedź. Myśl dalej!</p>
@@ -263,7 +263,7 @@
         <div id="step3" class="step">
             <h2>Zagadka #2: Rebus 🧩</h2>
             <img src="rebus.jpg" alt="Rebus">
-            <input type="text" id="answer3" placeholder="Hasło z rebusu...">
+            <input type="text" id="answer3" placeholder="Hasło z rebusu..." autocomplete="off">
             <br>
             <button onclick="checkStep3()">Sprawdź</button>
             <p id="error3" class="error">Niestety, to nie to!</p>
@@ -615,9 +615,9 @@
             
             gameArea.appendChild(item);
             
-            let speed = 20; 
-            if (type === 'bomba') speed = 20;
-            if (type === 'dildo') speed = 12; 
+            let speed = 8; 
+            if (type === 'bomba') speed = 12;
+            if (type === 'dildo') speed = 10; 
 
             fallingItemsArray.push({
                 element: item, type: type, y: -80, speed: speed 
